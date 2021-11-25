@@ -53,12 +53,12 @@ export default createStore({
     },
     mutateItem(state, {idParam, quantity, action}) {
       const cart = state.cart;
-      console.log();
       cart.forEach((el, i, arr) => {
-        if (el.productID === idParam || idParam === 0) {
-          console.log(el);
+      console.log(quantity);
+        if ((el.productID === idParam || idParam === 0) ) {
           switch (action) {
             case 'increment':
+              if(quantity >= state.storeItems[i].quantity) return;
               el.quantity++;
               el.price += el.itemObject[0].price;
               console.log(`incremented ${el.productID}`);

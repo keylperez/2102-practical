@@ -24,7 +24,13 @@
           </div>
           <div class="flex mb-3">
             <div class="text-left flex flex-1">
-              <span class="justify-start">Quantity: <input type="number" min="0" v-model.number="quantity" class="w-10 text-center bg-gray-300 text-gray-900 justify-end flex-1"></span>
+              <span
+                class="justify-start">Quantity:
+                <input
+                type="number"
+                min="0"
+                v-model.number="quantity"
+                class="w-10 text-center bg-gray-300 text-gray-900 justify-end flex-1"></span>
             </div>
           </div>
           <div class="flex-1 text-left">
@@ -71,7 +77,7 @@ export default {
           this.quantity = 0;
         }
       }
-      if(iteration === 'plus') {
+      if(iteration === 'plus' && this.quantity < this.fetchItem.quantity) {
         this.quantity++;
         this.total += this.fetchItem.price;
       }
