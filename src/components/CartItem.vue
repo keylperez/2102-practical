@@ -1,7 +1,7 @@
 <template>
   <tr v-for="item in $store.state.cart" :key="item.id" class="border-b">
         <td
-          class="p-4 px-6 text-center whitespace-nowrap">
+          class="p-4 px-6 text-center whitespace-nowrap text w-2/6">
           {{
           item.itemObject[0].name
           }}
@@ -11,10 +11,9 @@
           </td>
         <td class="p-4 px-6 text-center whitespace-nowrap">
         <div>
-            <button @click="$store.commit('mutateItem', {idParam: item.productID, quantity: item.quantity, action: 'decrement'})" class="px-2 py-0 shadow-2xl">-</button>
+            <button @click="$store.commit('mutateItem', {idParam: item.productID, quantity: item.quantity, action: 'decrement'})" class="px-2 py-0 shadow-2x bg-gray-900 text-white">-</button>
             <input
             type="number"
-            name="qty"
             v-model="item.quantity"
             min="0"
             :max="item.quantity"
@@ -22,11 +21,11 @@
             />
             <button
               @click="$store.commit('mutateItem', {idParam: item.productID, quantity: item.quantity, action: 'increment'})"
-              class="px-2 py-0 shadow-2xl ">+</button>
+              class="px-2 py-0 shadow-2xl bg-gray-900 text-white">+</button>
         </div>
         </td>
         <td
-          class="p-4 px-6 text-center whitespace-nowrap">{{
+          class="p-4 px-6 text-center whitespace-nowrap w-2/6">{{
           item.price.toLocaleString("en-US",
           {style:
           'currency',

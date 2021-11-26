@@ -22,4 +22,9 @@ export default {
   @apply bg-gray-800 text-white w-full h-screen;
   overflow: hidden;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 </style>

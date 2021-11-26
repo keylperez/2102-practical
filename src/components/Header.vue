@@ -1,6 +1,6 @@
 <template>
   
-  <header class=" p-5 bg-yellow-400 shadow-xl grid grid-cols-5 h-24">
+  <header class=" p-5 bg-yellow-400 shadow-xl grid grid-cols-5 h-24 text-gray-900">
     <div class="justify-items-start">
       <router-link class="text-5xl text-left" to="/"><p>Calabana Market</p>
       </router-link> 

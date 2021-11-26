@@ -6,7 +6,7 @@
         </div>
         <table class="w-full shadow-inner">
           <thead>
-            <tr class="bg-gray-100">
+            <tr class="bg-gray-700 text-white">
               <th class="px-6 py-3 font-bold whitespace-nowrap">Product</th>
               <th class="px-6 py-3 font-bold whitespace-nowrap">Qty</th>
               <th class="px-6 py-3 font-bold whitespace-nowrap">Price</th>
@@ -17,12 +17,16 @@
             
             <CartItem />
             <tr>
-              <td class="p-4 px-6 text-center whitespace-nowrap"></td>
+              <td class="p-4 px-6 font-extrabold text-center whitespace-nowrap">
+                <p v-if="usedCoupon === true" >
+                Discounted Price: {{ discounted.toLocaleString("en-US", {style: 'currency', currency: 'PHP'}) }}
+                </p>
+              </td>
               <td class="p-4 px-6 text-center whitespace-nowrap">
                 <div class="font-bold">Total Qty - {{cartQuantity}}</div>
               </td>
               <td class="p-4 px-6 font-extrabold text-center whitespace-nowrap">
-                Total - {{ total.toLocaleString("en-US", {style: 'currency', currency: 'PHP'}) }}
+                Total - {{ cartTotal.toLocaleString("en-US", {style: 'currency', currency: 'PHP'}) }}
               </td>
               <td class="p-4 px-6 text-center whitespace-nowrap">
                 <button
@@ -36,16 +40,28 @@
           </tbody>
         </table>
         <div class="flex justify-end mt-4 space-x-2 items-center">
-          <div class="flex flex-col">
-            <div class="flex-1">
-              <span>Coupon: </span>
+          <div class="flex flex-1 flex-col text-left px-6">
+            <div class="flex flex-1 ">
+              <span class="flex-1">Coupon: </span>
               <input
               @keyup.enter="couponInput"
               v-model="coupon"
               type="text"
-              class="border-b border-gray-400">
+              class="flex-2 border-b border-gray-400">
             </div>
-            <p class="flex-1 text-left text-red-500">{{ msg }}</p>
+            <div class="flex flex-1">
+              <span class="flex-1">Cash: </span>
+              <input
+              @input="cashInput"
+              v-model="cash"
+              min="0"
+              type="number"
+              class="flex-2 border-b border-gray-400">
+            </div>
+          </div>
+          <div class="flex flex-col flex-2 h-full">
+            <p class="flex-1 text-left text-red-500 h-full">{{ msg }}</p>
+            <p class="flex-1 text-left text-red-500 h-full">Change: {{ change.toLocaleString("en-US", {style: 'currency', currency: 'PHP'}) }}</p>
           </div>
           <router-link 
             to="/"
@@ -55,22 +71,24 @@
               text-sm text-gray-800
               bg-gray-200
               hover:bg-gray-400
+              flex-1
             "
           >
             Cancel
           </router-link>
-          <router-link
-            to="/checkout"
+          <button
+            @click="checkout"
             class="
               px-6
               py-3
               text-sm text-white
               bg-indigo-500
               hover:bg-indigo-600
+              flex-1
             "
           >
             Proceed to Checkout
-          </router-link>
+          </button>
         </div>
       </div>
     </div>
@@ -80,11 +98,25 @@
 import CartItem from '@/components/CartItem.vue';
 export default {
     name: 'Cart',
+    data(){
+      return{ 
+        msg: '',
+        coupon: '',
+        discount: 1,
+        cash: 0, 
+        change: -1,
+        usedCoupon: false,
+      }
+    },
     components: {
         CartItem,
     },
     methods: {
       couponInput(){
+        if(this.usedCoupon){ 
+          this.msg = "You already used a coupon";
+          return;
+        }
         if(this.cartTotal === 0) {
           this.msg = 'No items to discount';
           return;
@@ -114,20 +146,50 @@ export default {
 
           default:
             this.msg ="Invalid Coupon"
+            return;
             break;
         }
+        this.usedCoupon = true;
       },
+      cashInput(){
+        if(final < 0){
+          this.msg = 'Please input a positive amount';
+          return;
+        }
+        if(final <= this.discounted){
+          this.msg = `Please input amount equal to or above ${discounted.toLocaleString("en-US", {style: 'currency', currency: 'PHP'})}`
+          return;
+        }
+        const final = (this.cash - this.discounted);
+        this.change = final;
+      },
+      checkout(){
+        console.log(this.change);
+        console.log(this.$store.state.cart.length);
+        if(this.change < 0 && this.$store.state.cart.length > 0) {
+          alert("Please input valid amount");
+          return;
+        }
+        if(this.$store.state.cart.length <= 0) {
+          alert("No items to checkout");
+          return;
+        }
+        this.$store.state.cart = [];
+        this.$router.push('/checkout');
+      }
     },
     computed: {
         cartTotal: function(){
             const cart = this.$store.state.cart;
             let final = 0;
             cart.forEach(e => {
-                final += (e.price * e.quantity);
+                final += e.price;
+            console.log(e);
             });
-            // console.log(final);
-            // return final * discount;
-            this.total = final * this.discount;
+            return final;
+        },
+        discounted: function(){
+          return this.cartTotal *this.discount;
         },
         cartQuantity(discount){
 
@@ -140,27 +202,17 @@ export default {
         },
         getCartLength(){
           return this.$store.state.cart.length;
-        }
+        },
     },
     mounted(){
 
-    },
-    data(){
-      return{ 
-        msg: '',
-        total: 0,
-        coupon: '',
-        discount: 1
-      }
     },
 }
 </script>
 
 <style scoped>
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.flex-3{
+  flex: 3;
 }
 </style>

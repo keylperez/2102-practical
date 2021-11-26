@@ -9,9 +9,22 @@
                 <div><p>{{item.name}}</p></div>
                 <div><p class="text-sm text-gray-500">₱ {{item.price}}</p></div>
             </div>
-            <router-link :to="{name: 'Item', params: { name: item.name } }" >
-                <svg class="icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 512 640" enable-background="new 0 0 512 512" xml:space="preserve"><g><polygon points="406,406 106,406 106,106 256,106 256,68.5 68.5,68.5 68.5,443.5 443.5,443.5 443.5,256 406,256  "/><polygon points="293.5,68.5 347.5,122.5 241.2,228.8 283.2,270.8 389.5,164.5 443.5,218.5 443.5,68.5  "/></g></svg>
-            </router-link>
+            <router-link
+              :to="{name: 'Item', params: { name: item.name } }"
+              >
+              <svg
+              class="icon"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              version="1.1"
+              x="0px"
+              y="0px"
+              viewBox="0 0 512 640"
+              enable-background="new 0 0 512 512"
+              xml:space="preserve"><g><polygon
+              points="406,406 106,406 106,106 256,106 256,68.5 68.5,68.5 68.5,443.5 443.5,443.5 443.5,256 406,256  "/><polygon
+              points="293.5,68.5 347.5,122.5 241.2,228.8 283.2,270.8 389.5,164.5 443.5,218.5 443.5,68.5  "/></g></svg>
+              </router-link>
             <!-- <pre>
                 {{item}}
             </pre> -->

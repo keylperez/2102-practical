@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       flex: {
         2: '2',
+        
       }
     },
   },
